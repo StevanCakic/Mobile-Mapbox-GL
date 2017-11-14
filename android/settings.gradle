@@ -1,0 +1,6 @@
+rootProject.name = 'map_mobile'
+
+include ':app'
+
+include ':mobile-app'
+project(':mobile-app').projectDir = new File(rootProject.projectDir, '../node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl')
