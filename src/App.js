@@ -33,7 +33,6 @@ class App extends Component {
           style={styles.container}
           zoomEnabled={true}
         />
-
         <View style={styles.zoomContainer}>
           <TouchableHighlight
             onPress={this.zoomIn}
