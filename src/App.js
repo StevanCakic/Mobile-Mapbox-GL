@@ -8,6 +8,25 @@ Mapbox.setAccessToken(
   "pk.eyJ1IjoidGVzdHIiLCJhIjoiY2o5enlpdmNyMjF4MjMybnJmM3A4dW8zOCJ9.pjsE75NxZ9PGW8rnI5P5xA"
 );
 
+var options = {
+  enableHighAccuracy: true,
+  timeout: 50000,
+  maximumAge: 50000
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  console.log("test");
+  console.log("Your current position is:");
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,9 +41,9 @@ class App extends Component {
     this.zoomOut = this.zoomOut.bind(this);
     this.centerMap = this.centerMap.bind(this);
   }
-  setNativeProps = (nativeProps) => {
+  setNativeProps = nativeProps => {
     this._root.setNativeProps(nativeProps);
-  }
+  };
   zoomIn() {
     if (this.state.zoom < 22) {
       this.setState({ zoom: this.state.zoom + 1 });
@@ -49,19 +68,26 @@ class App extends Component {
         .then(() => {
           this.setState({ followUser: Mapbox.UserTrackingModes.Follow });
           this.setState({ showUser: true });
+          navigator.geolocation.getCurrentPosition(position => {
+            this.setState({
+              center: [position.coords.longitude, position.coords.latitude]
+            });
+          });
         })
         .catch(error => {
           this.setState({ followUser: Mapbox.UserTrackingModes.None });
           this.setState({ showUser: false });
+          this.setState({ center: [19.819025, 41.327953] });
         });
     } else {
+      console.log("test");
       this.setState({ followUser: Mapbox.UserTrackingModes.None });
       this.setState({ showUser: false });
+      this.setState({ center: [19.819025, 41.327953] });
     }
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         <Mapbox.MapView
@@ -72,7 +98,7 @@ class App extends Component {
           zoomEnabled={true}
           showUserLocation={this.state.showUser}
           userTrackingMode={this.state.followUser}
-          ref={component => this._root = component}
+          ref={component => (this._root = component)}
         />
 
         <View style={styles.zoomContainer}>
@@ -132,7 +158,7 @@ const styles = StyleSheet.create({
   zoomControlsContainer: {
     height: "50%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   controlsFont: {
     textAlign: "center",
@@ -154,9 +180,8 @@ const styles = StyleSheet.create({
   centerControlsContainer: {
     height: "100%",
     alignItems: "center",
-    justifyContent: "center",
-  },
-  
+    justifyContent: "center"
+  }
 });
 
 export default App;
