@@ -8,25 +8,6 @@ Mapbox.setAccessToken(
   "pk.eyJ1IjoidGVzdHIiLCJhIjoiY2o5enlpdmNyMjF4MjMybnJmM3A4dW8zOCJ9.pjsE75NxZ9PGW8rnI5P5xA"
 );
 
-var options = {
-  enableHighAccuracy: true,
-  timeout: 50000,
-  maximumAge: 50000
-};
-
-function success(pos) {
-  var crd = pos.coords;
-  console.log("test");
-  console.log("Your current position is:");
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +61,6 @@ class App extends Component {
           this.setState({ center: [19.819025, 41.327953] });
         });
     } else {
-      console.log("test");
       this.setState({ followUser: Mapbox.UserTrackingModes.None });
       this.setState({ showUser: false });
       this.setState({ center: [19.819025, 41.327953] });
